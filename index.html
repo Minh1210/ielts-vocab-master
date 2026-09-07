@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IELTS Vocab Master - Luyện Từ Vựng IELTS Chuyên Sâu</title>
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <div id="brandLogo" class="flex items-center gap-2.5 cursor-pointer select-none">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-indigo-500/30">
+          ⚡
+        </div>
+        <div>
+          <span class="font-extrabold text-lg text-white tracking-tight flex items-center gap-1.5">
+            IELTS <span class="text-indigo-400">Vocab</span> Master
+          </span>
+          <span class="text-[10px] text-slate-400 font-medium block -mt-1 tracking-wider uppercase">Luyện Từ Spaced Repetition</span>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="hidden lg:flex items-center space-x-1">
+        <button data-nav="dashboard" class="px-3 py-1.5 rounded-lg text-sm font-semibold transition text-indigo-400 bg-slate-800">
+          Trang chủ
+        </button>
+        <button data-nav="flashcard" class="px-3 py-1.5 rounded-lg text-sm font-semibold transition text-slate-300 hover:text-white hover:bg-slate-800">
+          Flashcard SRS
+        </button>
+        <button data-nav="quiz" class="px-3 py-1.5 rounded-lg text-sm font-semibold transition text-slate-300 hover:text-white hover:bg-slate-800">
+          Trắc nghiệm
+        </button>
+        <button data-nav="spelling" class="px-3 py-1.5 rounded-lg text-sm font-semibold transition text-slate-300 hover:text-white hover:bg-slate-800">
+          Chính tả
+        </button>
+        <button data-nav="matching" class="px-3 py-1.5 rounded-lg text-sm font-semibold transition text-slate-300 hover:text-white hover:bg-slate-800">
+          Nối từ
+        </button>
+        <button data-nav="fillblank" class="px-3 py-1.5 rounded-lg text-sm font-semibold transition text-slate-300 hover:text-white hover:bg-slate-800">
+          Điền câu
+        </button>
+        <button data-nav="wordlist" class="px-3 py-1.5 rounded-lg text-sm font-semibold transition text-slate-300 hover:text-white hover:bg-slate-800">
+          Kho từ vựng
+        </button>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2">
+        <button id="btnOpenAddWord" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold bg-indigo-600 hover:bg-indigo-500 text-white transition shadow-md shadow-indigo-600/30">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+          <span class="hidden sm:inline">Thêm từ mới</span>
+        </button>
+        
+        <button id="btnOpenSettings" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition" title="Cài đặt phát âm & mục tiêu">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN VIEW CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- 1. DASHBOARD SECTION -->
+    <section id="dashboardSection" class="space-y-8">
+      
+      <!-- HERO REVIEW BANNER -->
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-900/60 via-slate-900 to-slate-900 border border-indigo-500/30 p-6 sm:p-10 shadow-2xl backdrop-blur-md">
+        <div class="absolute -right-12 -bottom-12 w-64 h-64 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none"></div>
+
+        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative z-10">
+          <div>
+            <div class="flex items-center gap-2 mb-3">
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 streak-glow">
+                🔥 Chuỗi ngày học: <b id="dashStreak" class="font-extrabold ml-1">1 ngày</b>
+              </span>
+              <span class="text-xs text-slate-400">SM-2 Spaced Repetition</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Sẵn sàng bứt phá từ vựng IELTS hôm nay?
+            </h1>
+            <p class="text-slate-300 mt-2 max-w-xl text-sm sm:text-base">
+              Hệ thống đã chuẩn bị sẵn các từ vựng cần ôn tập. Ôn tập đúng lúc giúp nạp từ vựng vào trí nhớ dài hạn vĩnh viễn.
+            </p>
+
+            <!-- Daily Target Bar -->
+            <div class="mt-5 max-w-md">
+              <div class="flex justify-between text-xs font-semibold text-slate-400 mb-1.5">
+                <span>Mục tiêu hàng ngày</span>
+                <span id="dashDailyProgressText" class="text-indigo-300 font-bold">0 / 20 từ</span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden border border-slate-700">
+                <div id="dashDailyProgressBar" class="bg-gradient-to-r from-indigo-500 to-emerald-400 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Big Review Button -->
+          <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+            <button onclick="window.app.switchView('flashcard')" class="w-full sm:w-auto px-8 py-4 rounded-2xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-base transition shadow-xl shadow-indigo-600/30 flex items-center justify-center gap-2 active:scale-95 group">
+              <svg class="w-6 h-6 text-indigo-200 group-hover:scale-110 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+              <span>Ôn tập ngay (<b id="dashDueCount" class="text-amber-300">0</b> từ đến hạn)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- OVERALL STATS ROW -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-lg">
+          <span class="text-xs font-semibold text-slate-400 block uppercase tracking-wider">Tổng số từ trong kho</span>
+          <span id="dashTotalWords" class="text-3xl font-extrabold text-white mt-1 block">0</span>
+          <span class="text-xs text-indigo-400 mt-2 block">Đầy đủ mọi Band 4.0 - 9.0</span>
+        </div>
+
+        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-lg">
+          <span class="text-xs font-semibold text-emerald-400 block uppercase tracking-wider">Đã thuộc vững vàng</span>
+          <span id="dashMastered" class="text-3xl font-extrabold text-emerald-400 mt-1 block">0</span>
+          <span class="text-xs text-slate-400 mt-2 block">Đạt chu kỳ lặp lại dài</span>
+        </div>
+
+        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-lg">
+          <span class="text-xs font-semibold text-amber-400 block uppercase tracking-wider">Đang trong tiến trình học</span>
+          <span id="dashLearning" class="text-3xl font-extrabold text-amber-300 mt-1 block">0</span>
+          <span class="text-xs text-slate-400 mt-2 block">Đang ôn theo lịch SRS</span>
+        </div>
+      </div>
+
+      <!-- 5 PRACTICE MODES SELECTOR -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-extrabold text-white tracking-tight">5 Chế độ luyện tập phản xạ</h3>
+          <span class="text-xs text-slate-400">Chọn chế độ bạn muốn luyện tập</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          
+          <!-- Mode 1: Flashcard -->
+          <div onclick="window.app.switchView('flashcard')" class="cursor-pointer bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-5 transition shadow-lg flex flex-col justify-between group">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                🎴
+              </div>
+              <h4 class="font-bold text-white text-base group-hover:text-indigo-300 transition">Flashcard SRS</h4>
+              <p class="text-xs text-slate-400 mt-1">Lật thẻ 3D, nghe phát âm và đánh giá theo thuật toán lặp lại ngắt quãng.</p>
+            </div>
+            <span class="mt-4 text-xs font-semibold text-indigo-400 flex items-center gap-1">Luyện thẻ →</span>
+          </div>
+
+          <!-- Mode 2: Quiz -->
+          <div onclick="window.app.switchView('quiz')" class="cursor-pointer bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-5 transition shadow-lg flex flex-col justify-between group">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                🎯
+              </div>
+              <h4 class="font-bold text-white text-base group-hover:text-emerald-300 transition">Trắc nghiệm</h4>
+              <p class="text-xs text-slate-400 mt-1">4 đáp án phản xạ nhanh 2 chiều (Từ vựng ↔ Nghĩa), tính điểm combo.</p>
+            </div>
+            <span class="mt-4 text-xs font-semibold text-emerald-400 flex items-center gap-1">Chơi quiz →</span>
+          </div>
+
+          <!-- Mode 3: Spelling -->
+          <div onclick="window.app.switchView('spelling')" class="cursor-pointer bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-amber-500/50 rounded-2xl p-5 transition shadow-lg flex flex-col justify-between group">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                ✍️
+              </div>
+              <h4 class="font-bold text-white text-base group-hover:text-amber-300 transition">Luyện chính tả</h4>
+              <p class="text-xs text-slate-400 mt-1">Nghe audio và gõ chính tả chuẩn xác, chống mất điểm thi Listening & Writing.</p>
+            </div>
+            <span class="mt-4 text-xs font-semibold text-amber-400 flex items-center gap-1">Gõ từ →</span>
+          </div>
+
+          <!-- Mode 4: Speed Match -->
+          <div onclick="window.app.switchView('matching')" class="cursor-pointer bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-cyan-500/50 rounded-2xl p-5 transition shadow-lg flex flex-col justify-between group">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                ⚡
+              </div>
+              <h4 class="font-bold text-white text-base group-hover:text-cyan-300 transition">Nối từ siêu tốc</h4>
+              <p class="text-xs text-slate-400 mt-1">Ghép cặp từ vựng và nghĩa tiếng Việt trong bảng thẻ dưới áp lực thời gian.</p>
+            </div>
+            <span class="mt-4 text-xs font-semibold text-cyan-400 flex items-center gap-1">Ghép thẻ →</span>
+          </div>
+
+          <!-- Mode 5: Fill Blank -->
+          <div onclick="window.app.switchView('fillblank')" class="cursor-pointer bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-purple-500/50 rounded-2xl p-5 transition shadow-lg flex flex-col justify-between group">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                📝
+              </div>
+              <h4 class="font-bold text-white text-base group-hover:text-purple-300 transition">Điền câu IELTS</h4>
+              <p class="text-xs text-slate-400 mt-1">Ứng dụng từ vựng vào câu văn học thuật và bài mẫu IELTS điểm cao.</p>
+            </div>
+            <span class="mt-4 text-xs font-semibold text-purple-400 flex items-center gap-1">Điền câu →</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- QUICK BAND SELECTOR BAR -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-lg">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3">
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>🎯</span> Chọn nhanh từ vựng theo Band điểm mục tiêu (4.0 - 9.0):
+            </h3>
+            <p class="text-xs text-slate-400">Bấm vào bất kỳ Band điểm nào bên dưới để ôn luyện Flashcard hoặc Trắc nghiệm theo cấp độ</p>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-2" id="dashBandPills">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+
+      <!-- IELTS TOPICS GRID -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="text-xl font-extrabold text-white tracking-tight">Từ vựng theo 33 chủ đề IELTS, AWL & ZIM 7.0 (Hơn 3.700 từ vựng)</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Nguồn tài liệu độc quyền từ sách 33 chủ đề và ZIM Academy đã được nạp đầy đủ</p>
+          </div>
+          <button onclick="window.app.switchView('wordlist')" class="text-xs font-semibold text-indigo-400 hover:text-indigo-300">
+            Xem tất cả từ →
+          </button>
+        </div>
+
+        <div id="dashTopicsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 2. STUDY MODE SECTION (FLASHCARD, QUIZ, SPELLING, MATCHING, FILLBLANK) -->
+    <section id="modeSection" class="hidden">
+      <div class="mb-6 flex items-center justify-between">
+        <button onclick="window.app.switchView('dashboard')" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition text-sm font-medium">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+          <span>Về Dashboard</span>
+        </button>
+        <span class="text-xs text-slate-400">Nhấn Space để lật thẻ • 1-4 để đánh giá</span>
+      </div>
+
+      <!-- Mount point for mode controllers -->
+      <div id="modeContainer" class="py-4"></div>
+    </section>
+
+    <!-- 3. WORD LIST SECTION (VOCABULARY MANAGEMENT) -->
+    <section id="wordListSection" class="hidden space-y-6">
+      
+      <!-- Header & Tools -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-900/80 p-5 rounded-2xl border border-slate-800 shadow-lg">
+        <div>
+          <h2 class="text-2xl font-bold text-white tracking-tight">Kho từ vựng IELTS của bạn</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Hiện có <span id="wordListFilteredCount" class="font-bold text-indigo-300">0 từ</span> phù hợp bộ lọc</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="btnExportJSON" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition border border-slate-700" title="Sao lưu file JSON">
+            Xuất JSON
+          </button>
+          <button id="btnExportCSV" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition border border-slate-700" title="Xuất ra Excel/CSV">
+            Xuất CSV
+          </button>
+          <label class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition border border-slate-700 cursor-pointer" title="Nạp từ file backup JSON">
+            Nhập JSON
+            <input type="file" id="inputImportJSON" accept=".json" class="hidden" />
+          </label>
+          <button id="btnResetDefault" class="px-3 py-1.5 rounded-lg bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 text-xs font-semibold transition border border-rose-800/50" title="Khôi phục danh sách từ gốc">
+            Khôi phục gốc
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters & Search -->
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+        <div class="sm:col-span-1">
+          <input type="text" id="inputSearchWord" placeholder="Tìm kiếm từ hoặc nghĩa..." oninput="window.app.renderWordList()" class="w-full px-4 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-indigo-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <select id="filterTopicSelect" onchange="window.app.renderWordList()" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-indigo-500 focus:outline-none">
+            <option value="all">Tất cả chủ đề</option>
+          </select>
+        </div>
+
+        <div>
+          <select id="filterBandSelect" onchange="window.app.renderWordList()" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-indigo-500 focus:outline-none">
+            <option value="all">Tất cả Band điểm (4.0 - 9.0)</option>
+            <option value="4.0">Band 4.0 (Khởi đầu)</option>
+            <option value="4.5">Band 4.5</option>
+            <option value="5.0">Band 5.0 (Căn bản)</option>
+            <option value="5.5">Band 5.5</option>
+            <option value="6.0">Band 6.0 (Trung cấp)</option>
+            <option value="6.5">Band 6.5</option>
+            <option value="7.0">Band 7.0 (Khá)</option>
+            <option value="7.5">Band 7.5</option>
+            <option value="8.0">Band 8.0 (Giỏi)</option>
+            <option value="8.5">Band 8.5 (Rất giỏi)</option>
+            <option value="9.0">Band 9.0 (Xuất sắc / Bản xứ)</option>
+          </select>
+        </div>
+
+        <div>
+          <select id="filterStageSelect" onchange="window.app.renderWordList()" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-indigo-500 focus:outline-none">
+            <option value="all">Tất cả trạng thái SRS</option>
+            <option value="new">Từ mới chưa học</option>
+            <option value="learning">Đang học</option>
+            <option value="review">Đang ôn tập</option>
+            <option value="mastered">Đã thuộc vững vàng</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Cards Grid -->
+      <div id="wordListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Rendered by app.js -->
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- MODAL: ADD CUSTOM WORD -->
+  <div id="modalAddWord" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-xl w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
+      <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+          <span>✨</span> Thêm từ vựng mới
+        </h3>
+        <button type="button" id="btnCloseAddWord" class="text-slate-400 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <form id="formAddWord" class="space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Từ tiếng Anh *</label>
+            <input type="text" id="inputWord" required placeholder="vd: paradigm shift" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:border-indigo-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Loại từ</label>
+            <select id="inputType" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:border-indigo-500 focus:outline-none">
+              <option value="noun">Noun (Danh từ)</option>
+              <option value="verb">Verb (Động từ)</option>
+              <option value="adjective">Adjective (Tính từ)</option>
+              <option value="adverb">Adverb (Phó từ)</option>
+              <option value="phrase">Phrase / Idiom (Cụm từ)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Phiên âm IPA</label>
+            <input type="text" id="inputIpa" placeholder="vd: /ˈpær.ə.daɪm ˌʃɪft/" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:border-indigo-500 focus:outline-none font-mono" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Band điểm mục tiêu</label>
+            <select id="inputBand" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:border-indigo-500 focus:outline-none">
+              <option value="4.0">Band 4.0</option>
+              <option value="4.5">Band 4.5</option>
+              <option value="5.0">Band 5.0</option>
+              <option value="5.5">Band 5.5</option>
+              <option value="6.0">Band 6.0</option>
+              <option value="6.5">Band 6.5</option>
+              <option value="7.0">Band 7.0</option>
+              <option value="7.5" selected>Band 7.5</option>
+              <option value="8.0">Band 8.0</option>
+              <option value="8.5">Band 8.5</option>
+              <option value="9.0">Band 9.0</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Nghĩa tiếng Việt *</label>
+          <input type="text" id="inputMeaning" required placeholder="vd: sự thay đổi hệ hình, sự biến chuyển nhận thức căn bản" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:border-indigo-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Định nghĩa tiếng Anh (tùy chọn)</label>
+          <input type="text" id="inputDefinition" placeholder="vd: a fundamental change in approach or underlying assumptions" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:border-indigo-500 focus:outline-none" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Chủ đề (Topic)</label>
+            <select id="inputTopic" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:border-indigo-500 focus:outline-none">
+              <option value="Environment">Environment</option>
+              <option value="Education">Education</option>
+              <option value="Technology">Technology</option>
+              <option value="Health">Health</option>
+              <option value="Society">Society</option>
+              <option value="Crime">Crime</option>
+              <option value="Economy">Economy</option>
+              <option value="Culture">Culture</option>
+              <option value="AWL">AWL (Academic)</option>
+              <option value="Science">Science</option>
+              <option value="Custom">Custom</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Collocations (cách nhau bằng dấu phẩy)</label>
+            <input type="text" id="inputCollocations" placeholder="vd: major paradigm shift, represent a paradigm shift" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:border-indigo-500 focus:outline-none" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Câu ví dụ tiếng Anh</label>
+          <textarea id="inputExample" rows="2" placeholder="vd: The invention of the internet represents a paradigm shift in human communication." class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:border-indigo-500 focus:outline-none"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Dịch nghĩa câu ví dụ</label>
+          <textarea id="inputExampleVi" rows="2" placeholder="vd: Sự phát minh ra internet đại diện cho một sự thay đổi hệ hình căn bản trong giao tiếp con người." class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:border-indigo-500 focus:outline-none"></textarea>
+        </div>
+
+        <div class="pt-3 flex justify-end gap-3">
+          <button type="button" onclick="document.getElementById('modalAddWord').classList.add('hidden')" class="px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold transition">
+            Hủy
+          </button>
+          <button type="submit" class="px-6 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold transition shadow-lg shadow-indigo-600/30">
+            Lưu vào kho từ
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: SETTINGS -->
+  <div id="modalSettings" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+          <span>⚙️</span> Cài đặt học tập & Giọng đọc
+        </h3>
+        <button type="button" id="btnCloseSettings" class="text-slate-400 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <form id="formSettings" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Giọng phát âm (Accent)</label>
+          <select id="settingAccent" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:border-indigo-500 focus:outline-none">
+            <option value="en-GB">🇬🇧 Giọng Anh - Anh (UK British) - Chuẩn thi IELTS</option>
+            <option value="en-US">🇺🇸 Giọng Anh - Mỹ (US American)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Tốc độ đọc (Speech Rate)</label>
+          <select id="settingSpeechRate" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:border-indigo-500 focus:outline-none">
+            <option value="0.75">Chậm (0.75x) - Dễ nghe rõ từng âm</option>
+            <option value="0.9" selected>Tự nhiên (0.9x) - Khuyên dùng</option>
+            <option value="1.0">Chuẩn người bản xứ (1.0x)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Mục tiêu từ vựng mỗi ngày</label>
+          <select id="settingDailyGoal" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:border-indigo-500 focus:outline-none">
+            <option value="10">Nhẹ nhàng (10 từ / ngày)</option>
+            <option value="20" selected>Tiêu chuẩn (20 từ / ngày)</option>
+            <option value="30">Tăng tốc (30 từ / ngày)</option>
+            <option value="50">Cường độ cao (50 từ / ngày)</option>
+          </select>
+        </div>
+
+        <div class="flex items-center justify-between pt-2">
+          <div>
+            <span class="text-sm font-semibold text-white block">Tự động phát âm khi lật thẻ</span>
+            <span class="text-xs text-slate-400">Nghe ngay khi mở flashcard</span>
+          </div>
+          <input type="checkbox" id="settingAutoPlay" checked class="w-5 h-5 rounded bg-slate-800 border-slate-700 text-indigo-600 focus:ring-indigo-500" />
+        </div>
+
+        <div class="pt-4 flex justify-end gap-3 border-t border-slate-800">
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold transition shadow-lg shadow-indigo-600/30">
+            Lưu cài đặt
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-950 border-t border-slate-900 py-6 text-center text-xs text-slate-500">
+    <p>IELTS Vocab Master • Thiết kế theo phương pháp Spaced Repetition (Luyện Từ) • Hoạt động 100% offline trên máy của bạn</p>
+  </footer>
+
+  <!-- APPLICATION SCRIPTS -->
+  <script src="js/data/ielts_words.js"></script>
+  <script src="js/srs.js"></script>
+  <script src="js/speech.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/modes/flashcard.js"></script>
+  <script src="js/modes/quiz.js"></script>
+  <script src="js/modes/spelling.js"></script>
+  <script src="js/modes/matching.js"></script>
+  <script src="js/modes/fillblank.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
