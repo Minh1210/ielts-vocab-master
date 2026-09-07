@@ -37,6 +37,11 @@ class IELTSApp {
     this.bindModals();
     this.renderTopicsFilter();
     this.updateDashboard();
+
+    // Listen for streak updates from any review activity
+    window.addEventListener('ielts:streak-updated', () => {
+      this.renderStreakWidget();
+    });
   }
 
   bindNavigation() {
@@ -277,10 +282,10 @@ class IELTSApp {
     const stats = StorageManager.getStatistics();
     const settings = StorageManager.getSettings();
 
-    // Streak and header stats
-    const streakEl = document.getElementById('dashStreak');
-    if (streakEl) streakEl.textContent = `${stats.streak} ngày`;
+    // Streak & Weekly Tracker
+    this.renderStreakWidget();
 
+    // Overall stats
     const dueCountEl = document.getElementById('dashDueCount');
     if (dueCountEl) dueCountEl.textContent = stats.dueCount;
 
@@ -307,6 +312,175 @@ class IELTSApp {
     // Render Band Pills & topic cards
     this.renderBandPills();
     this.renderTopicCards();
+  }
+
+  renderStreakWidget() {
+    const stats = StorageManager.getStatistics();
+    const weeklyDays = StorageManager.getWeeklyStreak();
+    const { nextMilestone } = StorageManager.getMilestones();
+
+    // 1. Header streak count
+    const headerStreakEl = document.getElementById('headerStreakCount');
+    if (headerStreakEl) headerStreakEl.textContent = stats.streak;
+
+    // 2. Hero banner streak
+    const dashStreakEl = document.getElementById('dashStreak');
+    if (dashStreakEl) dashStreakEl.textContent = `${stats.streak} ngày`;
+
+    // 3. Dedicated Card: Big streak number
+    const dashStreakLarge = document.getElementById('dashStreakLarge');
+    if (dashStreakLarge) dashStreakLarge.textContent = stats.streak;
+
+    // Longest streak and total reviews
+    const dashLongestStreak = document.getElementById('dashLongestStreak');
+    if (dashLongestStreak) dashLongestStreak.textContent = `${stats.longestStreak || stats.streak} ngày`;
+
+    const dashTotalReviewsCount = document.getElementById('dashTotalReviewsCount');
+    if (dashTotalReviewsCount) dashTotalReviewsCount.textContent = `${stats.totalReviews || 0} lượt`;
+
+    // Status Badge
+    const statusBadge = document.getElementById('dashStreakStatusBadge');
+    const statusText = document.getElementById('dashStreakStatusText');
+    if (statusBadge && statusText) {
+      if (stats.studiedToday) {
+        statusBadge.className = 'mt-1.5 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30';
+        statusText.innerHTML = '<span>✅ Đã giữ chuỗi hôm nay!</span>';
+      } else {
+        statusBadge.className = 'mt-1.5 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30';
+        statusText.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-400 animate-ping inline-block mr-1"></span><span>Chưa giữ chuỗi hôm nay!</span>';
+      }
+    }
+
+    // 4. 7-Day Weekly Tokens
+    const weeklyContainer = document.getElementById('dashWeeklyStreakTokens');
+    if (weeklyContainer) {
+      weeklyContainer.innerHTML = weeklyDays.map(day => {
+        let circleClass = '';
+        let iconContent = '';
+
+        if (day.studied) {
+          circleClass = 'streak-dot-done text-white border border-amber-400 font-black';
+          iconContent = '🔥';
+        } else if (day.isToday) {
+          circleClass = 'streak-dot-today-pending bg-amber-500/10 text-amber-300 font-extrabold';
+          iconContent = '⚡';
+        } else if (day.isPast) {
+          circleClass = 'bg-slate-800/80 text-slate-500 border border-slate-700/60 font-semibold';
+          iconContent = '•';
+        } else {
+          circleClass = 'bg-slate-800/40 text-slate-600 border border-slate-800/80 font-normal';
+          iconContent = '';
+        }
+
+        const tooltipTitle = day.studied 
+          ? `${day.fullName}: Đã học` 
+          : day.isToday 
+          ? `${day.fullName} (Hôm nay): Cần ôn tập để giữ chuỗi` 
+          : `${day.fullName}: ${day.isPast ? 'Chưa học' : 'Sắp tới'}`;
+
+        return `
+          <div class="flex flex-col items-center gap-1 p-1 sm:p-1.5 rounded-xl transition ${day.isToday ? 'bg-slate-800/70 border border-amber-500/30' : ''}" title="${tooltipTitle}">
+            <span class="text-[10px] font-bold ${day.isToday ? 'text-amber-400' : 'text-slate-400'} uppercase">${day.label}</span>
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-xs ${circleClass} transition-all">
+              ${iconContent || day.dayNumber}
+            </div>
+            <span class="text-[10px] ${day.isToday ? 'text-amber-300 font-bold' : 'text-slate-500'}">${day.dayNumber}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // 5. Milestone Banner
+    const milestoneIcon = document.getElementById('dashMilestoneIcon');
+    const milestoneTitle = document.getElementById('dashMilestoneTitle');
+    const milestoneRemaining = document.getElementById('dashMilestoneRemaining');
+    const milestoneBar = document.getElementById('dashMilestoneProgressBar');
+
+    if (milestoneIcon) milestoneIcon.textContent = nextMilestone.icon;
+    if (milestoneTitle) milestoneTitle.textContent = `Mục tiêu tiếp theo: ${nextMilestone.title} (${nextMilestone.target} ngày)`;
+    if (milestoneRemaining) {
+      milestoneRemaining.textContent = nextMilestone.daysLeft > 0 
+        ? `Còn ${nextMilestone.daysLeft} ngày` 
+        : 'Đã đạt được! 🏆';
+    }
+    if (milestoneBar) {
+      milestoneBar.style.width = `${nextMilestone.percent}%`;
+    }
+  }
+
+  openStreakModal() {
+    const stats = StorageManager.getStatistics();
+    const { badges } = StorageManager.getMilestones();
+    const heatmapData = StorageManager.getPastActivityMap(28);
+
+    // Populate modal quick stats
+    const curEl = document.getElementById('modalStreakCurrent');
+    if (curEl) curEl.textContent = `${stats.streak} ngày`;
+
+    const longEl = document.getElementById('modalStreakLongest');
+    if (longEl) longEl.textContent = `${stats.longestStreak || stats.streak} ngày`;
+
+    const daysEl = document.getElementById('modalStreakTotalDays');
+    if (daysEl) daysEl.textContent = `${stats.totalStudyDays || 1} ngày`;
+
+    const revEl = document.getElementById('modalStreakTotalReviews');
+    if (revEl) revEl.textContent = `${stats.totalReviews || 0} lượt`;
+
+    // Populate 28-day activity heatmap
+    const heatmapContainer = document.getElementById('modalStreakHeatmap');
+    if (heatmapContainer) {
+      heatmapContainer.innerHTML = heatmapData.map(item => {
+        const bgClass = item.studied 
+          ? 'bg-gradient-to-tr from-amber-500 to-orange-500 shadow-md shadow-amber-500/20 text-slate-950 font-black' 
+          : item.isToday
+          ? 'bg-amber-500/10 border-2 border-dashed border-amber-500/60 text-amber-300 font-bold'
+          : 'bg-slate-800/80 border border-slate-700/50 text-slate-500';
+
+        const title = `${item.dateStr}: ${item.studied ? 'Đã hoàn thành ôn tập 🔥' : (item.isToday ? 'Hôm nay (chưa học)' : 'Chưa học')}`;
+
+        return `
+          <div class="streak-heatmap-cell aspect-square rounded-xl flex flex-col items-center justify-center text-[10px] cursor-default p-1 ${bgClass}" title="${title}">
+            <span>${item.dayNum}</span>
+            <span class="text-[8px] opacity-80">${item.studied ? '🔥' : (item.isToday ? '⚡' : '')}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Populate badges
+    const badgesContainer = document.getElementById('modalStreakBadges');
+    if (badgesContainer) {
+      badgesContainer.innerHTML = badges.map(b => {
+        const borderClass = b.unlocked 
+          ? 'border-amber-500/50 bg-gradient-to-r from-amber-500/10 to-slate-900 shadow-lg shadow-amber-500/5' 
+          : 'border-slate-800 bg-slate-900/60 opacity-60';
+
+        return `
+          <div class="p-3.5 rounded-2xl border ${borderClass} flex items-center gap-3.5 transition">
+            <div class="w-12 h-12 rounded-xl ${b.unlocked ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-slate-800 text-slate-600'} flex items-center justify-center text-2xl flex-shrink-0">
+              ${b.icon}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-1">
+                <h5 class="text-xs sm:text-sm font-bold ${b.unlocked ? 'text-white' : 'text-slate-400'} truncate">${b.title}</h5>
+                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full ${b.unlocked ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-slate-800 text-slate-500'}">
+                  ${b.unlocked ? 'ĐÃ MỞ' : `${b.current}/${b.target} ngày`}
+                </span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-0.5 truncate">${b.desc}</p>
+              
+              <div class="w-full bg-slate-800 rounded-full h-1.5 mt-2 overflow-hidden">
+                <div class="h-1.5 rounded-full ${b.unlocked ? 'bg-emerald-400' : 'bg-amber-500'}" style="width: ${b.percent}%"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Show modal
+    const modal = document.getElementById('modalStreakDetail');
+    if (modal) modal.classList.remove('hidden');
   }
 
   renderBandPills() {

@@ -1,19 +1,19 @@
 // IELTS Vocab Master - Network-First Service Worker (Auto-Update)
-const CACHE_NAME = 'ielts-vocab-v6-overhaul';
+const CACHE_NAME = 'ielts-vocab-v7-streak';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './css/styles.css',
-  './js/app.js?v=20260908c',
-  './js/speech.js?v=20260908c',
-  './js/srs.js?v=20260908c',
-  './js/storage.js?v=20260908c',
-  './js/data/ielts_words.js?v=20260908c',
-  './js/modes/flashcard.js?v=20260908c',
-  './js/modes/quiz.js?v=20260908c',
-  './js/modes/spelling.js?v=20260908c',
-  './js/modes/matching.js?v=20260908c',
-  './js/modes/fillblank.js?v=20260908c',
+  './js/app.js?v=20260908e',
+  './js/speech.js?v=20260908e',
+  './js/srs.js?v=20260908e',
+  './js/storage.js?v=20260908e',
+  './js/data/ielts_words.js?v=20260908e',
+  './js/modes/flashcard.js?v=20260908e',
+  './js/modes/quiz.js?v=20260908e',
+  './js/modes/spelling.js?v=20260908e',
+  './js/modes/matching.js?v=20260908e',
+  './js/modes/fillblank.js?v=20260908e',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png'
