@@ -1,29 +1,30 @@
-// IELTS Vocab Master - Offline Cache Service Worker
-const CACHE_NAME = 'ielts-vocab-v1';
+// IELTS Vocab Master - Network-First Service Worker (Auto-Update)
+const CACHE_NAME = 'ielts-vocab-v6-overhaul';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './css/styles.css',
-  './js/app.js',
-  './js/speech.js',
-  './js/srs.js',
-  './js/storage.js',
-  './js/data/ielts_words.js',
-  './js/modes/flashcard.js',
-  './js/modes/quiz.js',
-  './js/modes/spelling.js',
-  './js/modes/matching.js',
-  './js/modes/fillblank.js',
+  './js/app.js?v=20260908c',
+  './js/speech.js?v=20260908c',
+  './js/srs.js?v=20260908c',
+  './js/storage.js?v=20260908c',
+  './js/data/ielts_words.js?v=20260908c',
+  './js/modes/flashcard.js?v=20260908c',
+  './js/modes/quiz.js?v=20260908c',
+  './js/modes/spelling.js?v=20260908c',
+  './js/modes/matching.js?v=20260908c',
+  './js/modes/fillblank.js?v=20260908c',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png'
 ];
 
 self.addEventListener('install', (e) => {
+  self.skipWaiting();
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS_TO_CACHE);
-    }).then(() => self.skipWaiting())
+    }).catch(() => {})
   );
 });
 
@@ -32,7 +33,10 @@ self.addEventListener('activate', (e) => {
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((k) => {
-          if (k !== CACHE_NAME) return caches.delete(k);
+          if (k !== CACHE_NAME) {
+            console.log('[SW] Deleting obsolete cache:', k);
+            return caches.delete(k);
+          }
         })
       );
     }).then(() => self.clients.claim())
@@ -40,10 +44,16 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-  // Respond from cache first, then network fallback
+  // Always fetch fresh from network for instant updates, fallback to cache if offline
   e.respondWith(
-    caches.match(e.request).then((res) => {
-      return res || fetch(e.request).catch(() => caches.match('./index.html'));
+    fetch(e.request).then((response) => {
+      if (response && response.status === 200 && e.request.method === 'GET') {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+      }
+      return response;
+    }).catch(() => {
+      return caches.match(e.request).then((res) => res || caches.match('./index.html'));
     })
   );
 });

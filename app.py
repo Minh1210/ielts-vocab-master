@@ -33,30 +33,38 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
     def end_headers(self):
         self.send_header('Access-Control-Allow-Origin', '*')
+        # Prevent aggressive caching for HTML, JS and JSON so updates show immediately
+        clean_path = self.path.split('?')[0].lower()
+        if clean_path.endswith(('.html', '.js', '.json', '.webmanifest')) or clean_path == '/' or not clean_path:
+            self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0')
+            self.send_header('Pragma', 'no-cache')
+            self.send_header('Expires', '0')
         super().end_headers()
 
 def run():
     os.chdir(DIRECTORY)
-    socketserver.TCPServer.allow_reuse_address = True
     
     port = int(os.environ.get("PORT", 8000))
     host = "0.0.0.0"
     is_cloud = bool(os.environ.get("RAILWAY_ENVIRONMENT") or os.environ.get("PORT"))
     
+    ServerClass = getattr(http.server, 'ThreadingHTTPServer', socketserver.TCPServer)
+    ServerClass.allow_reuse_address = True
+    
     try:
-        httpd = socketserver.TCPServer((host, port), Handler)
+        httpd = ServerClass((host, port), Handler)
     except OSError:
         fallback_port = 8080 if port == 8000 else port + 1
-        httpd = socketserver.TCPServer((host, fallback_port), Handler)
+        httpd = ServerClass((host, fallback_port), Handler)
         port = fallback_port
 
     print("=" * 60)
-    print("  [OK] IELTS VOCAB MASTER (LUYEN TU) - SERVER READY")
+    print("  [OK] IELTS VOCAB MASTER - SERVER ONLINE")
     print(f"  Listening on: http://{host}:{port}")
     if is_cloud:
-        print("  Running in Cloud / Production mode (Railway)")
+        print("  Running in Cloud Mode (Railway)")
     else:
-        print(f"  Local access: http://localhost:{port}")
+        print(f"  Local URL: http://localhost:{port}")
     print("=" * 60)
 
     if not is_cloud:
