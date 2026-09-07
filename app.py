@@ -4,6 +4,12 @@ import webbrowser
 import os
 import sys
 
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+
 DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 
 class Handler(http.server.SimpleHTTPRequestHandler):
@@ -44,14 +50,14 @@ def run():
         httpd = socketserver.TCPServer((host, fallback_port), Handler)
         port = fallback_port
 
-    print("=" * 55)
-    print("  ⚡ IELTS VOCAB MASTER (LUYEN TU) - SERVER READY")
+    print("=" * 60)
+    print("  [OK] IELTS VOCAB MASTER (LUYEN TU) - SERVER READY")
     print(f"  Listening on: http://{host}:{port}")
     if is_cloud:
-        print("  Running in Cloud / Production mode")
+        print("  Running in Cloud / Production mode (Railway)")
     else:
         print(f"  Local access: http://localhost:{port}")
-    print("=" * 55)
+    print("=" * 60)
 
     if not is_cloud:
         try:
@@ -62,7 +68,7 @@ def run():
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
-        print("\nDa tat server. Hen gap lai!")
+        print("\nServer stopped.")
         httpd.server_close()
 
 if __name__ == "__main__":
