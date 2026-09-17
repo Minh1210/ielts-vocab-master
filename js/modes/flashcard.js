@@ -35,10 +35,9 @@ class FlashcardMode {
         e.preventDefault();
         this.flipCard();
       } else if (this.isFlipped) {
-        if (e.key === '1') this.rateCard(1);
-        else if (e.key === '2') this.rateCard(2);
-        else if (e.key === '3') this.rateCard(3);
-        else if (e.key === '4') this.rateCard(4);
+        if (e.key === '1') this.rateCard('reset');
+        else if (e.key === '2') this.rateCard('review');
+        else if (e.key === '3') this.rateCard('master');
       }
     };
     document.addEventListener('keydown', this.handleKeyDown);
@@ -101,11 +100,6 @@ class FlashcardMode {
         window.speechService.speak(card.word, settings.accent);
       }, 300);
     }
-
-    const interval1 = SRSManager.getIntervalLabel(1, card);
-    const interval2 = SRSManager.getIntervalLabel(2, card);
-    const interval3 = SRSManager.getIntervalLabel(3, card);
-    const interval4 = SRSManager.getIntervalLabel(4, card);
 
     this.container.innerHTML = `
       <div class="max-w-2xl mx-auto w-full px-4">
@@ -206,7 +200,7 @@ class FlashcardMode {
               </div>
 
               <div class="text-center text-xs text-slate-400 pt-3 border-t border-slate-700/50">
-                <span>Chọn mức độ ghi nhớ phía dưới để tiếp tục</span>
+                <span>Chọn Reset, Review hoặc Master phía dưới để tiếp tục</span>
               </div>
             </div>
 
@@ -214,29 +208,29 @@ class FlashcardMode {
         </div>
 
         <!-- Rating Action Buttons (When card flipped) -->
-        <div class="rating-actions hidden mt-6 grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-          <button data-rate="1" class="flex flex-col items-center justify-center p-3 rounded-xl bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 border border-rose-800/70 transition shadow-lg active:scale-95 group">
-            <span class="font-bold text-sm">🔴 Quên (Lại)</span>
-            <span class="text-xs text-rose-400/80 mt-0.5">${interval1}</span>
-            <kbd class="mt-1 px-1.5 py-0.2 bg-rose-900/50 rounded text-[10px] text-rose-300 font-mono">1</kbd>
+        <div class="rating-actions hidden mt-6 grid grid-cols-3 gap-2.5 sm:gap-3">
+          <button data-rate="reset" class="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 py-3 px-2 sm:py-3.5 sm:px-4 rounded-xl bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 border border-rose-800/70 hover:border-rose-500/80 transition shadow-lg active:scale-95 group cursor-pointer" title="Reset (Phím 1)">
+            <span class="font-bold text-sm sm:text-base flex items-center gap-1.5">
+              <span>🔄</span>
+              <span>Reset</span>
+            </span>
+            <kbd class="px-1.5 py-0.5 bg-rose-900/60 rounded text-[10px] sm:text-xs text-rose-300 font-mono border border-rose-700/60">1</kbd>
           </button>
 
-          <button data-rate="2" class="flex flex-col items-center justify-center p-3 rounded-xl bg-amber-950/60 hover:bg-amber-900/80 text-amber-300 border border-amber-800/70 transition shadow-lg active:scale-95 group">
-            <span class="font-bold text-sm">🟠 Khó</span>
-            <span class="text-xs text-amber-400/80 mt-0.5">${interval2}</span>
-            <kbd class="mt-1 px-1.5 py-0.2 bg-amber-900/50 rounded text-[10px] text-amber-300 font-mono">2</kbd>
+          <button data-rate="review" class="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 py-3 px-2 sm:py-3.5 sm:px-4 rounded-xl bg-amber-950/60 hover:bg-amber-900/80 text-amber-300 border border-amber-800/70 hover:border-amber-500/80 transition shadow-lg active:scale-95 group cursor-pointer" title="Review (Phím 2)">
+            <span class="font-bold text-sm sm:text-base flex items-center gap-1.5">
+              <span>📝</span>
+              <span>Review</span>
+            </span>
+            <kbd class="px-1.5 py-0.5 bg-amber-900/60 rounded text-[10px] sm:text-xs text-amber-300 font-mono border border-amber-700/60">2</kbd>
           </button>
 
-          <button data-rate="3" class="flex flex-col items-center justify-center p-3 rounded-xl bg-emerald-950/60 hover:bg-emerald-900/80 text-emerald-300 border border-emerald-800/70 transition shadow-lg active:scale-95 group">
-            <span class="font-bold text-sm">🟢 Tốt</span>
-            <span class="text-xs text-emerald-400/80 mt-0.5">${interval3}</span>
-            <kbd class="mt-1 px-1.5 py-0.2 bg-emerald-900/50 rounded text-[10px] text-emerald-300 font-mono">3</kbd>
-          </button>
-
-          <button data-rate="4" class="flex flex-col items-center justify-center p-3 rounded-xl bg-cyan-950/60 hover:bg-cyan-900/80 text-cyan-300 border border-cyan-800/70 transition shadow-lg active:scale-95 group">
-            <span class="font-bold text-sm">🔵 Rất dễ</span>
-            <span class="text-xs text-cyan-400/80 mt-0.5">${interval4}</span>
-            <kbd class="mt-1 px-1.5 py-0.2 bg-cyan-900/50 rounded text-[10px] text-cyan-300 font-mono">4</kbd>
+          <button data-rate="master" class="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 py-3 px-2 sm:py-3.5 sm:px-4 rounded-xl bg-emerald-950/60 hover:bg-emerald-900/80 text-emerald-300 border border-emerald-800/70 hover:border-emerald-500/80 transition shadow-lg active:scale-95 group cursor-pointer" title="Master (Phím 3)">
+            <span class="font-bold text-sm sm:text-base flex items-center gap-1.5">
+              <span>⭐</span>
+              <span>Master</span>
+            </span>
+            <kbd class="px-1.5 py-0.5 bg-emerald-900/60 rounded text-[10px] sm:text-xs text-emerald-300 font-mono border border-emerald-700/60">3</kbd>
           </button>
         </div>
 
@@ -267,7 +261,7 @@ class FlashcardMode {
     rateButtons.forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const rate = parseInt(btn.getAttribute('data-rate'), 10);
+        const rate = btn.getAttribute('data-rate');
         this.rateCard(rate);
       });
     });

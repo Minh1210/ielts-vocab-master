@@ -362,7 +362,8 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
           <span>Về Dashboard</span>
         </button>
-        <span class="text-xs text-slate-400">Nhấn Space để lật thẻ • 1-4 để đánh giá</span>
+        <span class="text-xs text-slate-400 hidden sm:inline">Nhấn Space để lật thẻ • 1-3 để đánh giá (1: Reset • 2: Review • 3: Master)</span>
+        <span class="text-xs text-slate-400 sm:hidden">Space lật thẻ • 1-3 đánh giá</span>
       </div>
 
       <!-- Mount point for mode controllers -->
@@ -709,16 +710,16 @@
   </footer>
 
   <!-- APPLICATION SCRIPTS -->
-  <script src="js/data/ielts_words.js?v=20260908e"></script>
-  <script src="js/srs.js?v=20260908e"></script>
-  <script src="js/speech.js?v=20260908e"></script>
-  <script src="js/storage.js?v=20260908e"></script>
-  <script src="js/modes/flashcard.js?v=20260908e"></script>
-  <script src="js/modes/quiz.js?v=20260908e"></script>
-  <script src="js/modes/spelling.js?v=20260908e"></script>
-  <script src="js/modes/matching.js?v=20260908e"></script>
-  <script src="js/modes/fillblank.js?v=20260908e"></script>
-  <script src="js/app.js?v=20260908e"></script>
+  <script src="js/data/ielts_words.js?v=20260918a"></script>
+  <script src="js/srs.js?v=20260918a"></script>
+  <script src="js/speech.js?v=20260918a"></script>
+  <script src="js/storage.js?v=20260918a"></script>
+  <script src="js/modes/flashcard.js?v=20260918a"></script>
+  <script src="js/modes/quiz.js?v=20260918a"></script>
+  <script src="js/modes/spelling.js?v=20260918a"></script>
+  <script src="js/modes/matching.js?v=20260918a"></script>
+  <script src="js/modes/fillblank.js?v=20260918a"></script>
+  <script src="js/app.js?v=20260918a"></script>
 
     <!-- PWA Service Worker Registration with Instant Cache Invalidation -->
   <script>
@@ -729,7 +730,7 @@
         }
       });
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js?v=20260908e').catch(err => {
+        navigator.serviceWorker.register('./sw.js?v=20260918a').catch(err => {
           console.log('SW registration note:', err);
         });
       });

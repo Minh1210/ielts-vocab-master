@@ -22758,12 +22758,13 @@ const DEFAULT_IELTS_WORDS = [
     "type": "adjective",
     "ipa": "[ʃiːk]",
     "meaning": "Tinh tế, sành điệu",
-    "definition": "A term relating to Appearance denoting 'Tinh tế, sành điệu'.",
+    "definition": "Elegantly and stylishly fashionable.",
     "example": "The candidate impressed the interview panel with their chic demeanor and articulate communication.",
     "exampleVi": "Ứng viên đã gây ấn tượng với hội đồng phỏng vấn nhờ phong thái tinh tế, sành điệu và khả năng giao tiếp lưu loát.",
     "collocations": [
-      "key chic",
-      "significant chic"
+      "chic appearance",
+      "effortlessly chic",
+      "chic and elegant"
     ],
     "topic": "Appearance",
     "band": "4.0",

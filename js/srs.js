@@ -22,39 +22,40 @@ class SRSManager {
   /**
    * Calculate next review interval using SM-2
    * @param {Object} card 
-   * @param {number} quality 1 (Again), 2 (Hard), 3 (Good), 4 (Easy)
+   * @param {number|string} quality 'reset' | 1, 'review' | 2 | 3, 'master' | 4 | 5
    * @returns {Object} updated card attributes
    */
   static calculateReview(card, quality) {
-    // Map 1-4 scale to standard SM-2 1-5 scale:
-    // 1 -> 1 (Again), 2 -> 3 (Hard), 3 -> 4 (Good), 4 -> 5 (Easy)
-    const sm2Quality = quality === 1 ? 1 : quality === 2 ? 3 : quality === 3 ? 4 : 5;
-
     let { repetitions = 0, easeFactor = 2.5, interval = 0 } = card;
+    const now = Date.now();
+    const oneDayMs = 24 * 60 * 60 * 1000;
 
-    if (sm2Quality < 3) {
-      // Failed card - reset interval and repetitions
+    const isReset = (quality === 1 || quality === 'reset' || quality === 'again');
+    const isMaster = (quality === 'master' || quality === 4 || quality === 5);
+
+    if (isReset) {
+      // RESET: Card forgotten or reset to beginning
       repetitions = 0;
       interval = 1;
+      easeFactor = Math.max(1.3, easeFactor - 0.2);
+    } else if (isMaster) {
+      // MASTER: Card completely mastered, immediately advanced to mastered stage & long interval
+      repetitions = Math.max(repetitions + 3, 6);
+      interval = Math.max(Math.round((interval || 2) * easeFactor * 1.6), 14);
+      easeFactor = Math.min(3.0, easeFactor + 0.15);
     } else {
-      // Successful recall
+      // REVIEW: Card remembered, standard spaced repetition progression
       if (repetitions === 0) {
         interval = 1;
       } else if (repetitions === 1) {
-        interval = 4;
+        interval = 3;
       } else {
         interval = Math.round(interval * easeFactor);
       }
       repetitions += 1;
+      easeFactor = Math.min(3.0, easeFactor + 0.05);
     }
 
-    // Update Ease Factor: EF' = EF + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02))
-    easeFactor = easeFactor + (0.1 - (5 - sm2Quality) * (0.08 + (5 - sm2Quality) * 0.02));
-    if (easeFactor < 1.3) easeFactor = 1.3;
-    if (easeFactor > 3.0) easeFactor = 3.0;
-
-    const now = Date.now();
-    const oneDayMs = 24 * 60 * 60 * 1000;
     const nextReviewDate = now + interval * oneDayMs;
 
     const updatedCard = {
