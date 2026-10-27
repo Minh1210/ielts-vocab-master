@@ -1,19 +1,15 @@
-import os
+import subprocess
 
-vbs_content = r'''Set oWS = WScript.CreateObject("WScript.Shell")
-sLinkFile = "C:\Users\ADMIN\Desktop\IELTS Vocab Master.lnk"
-Set oLink = oWS.CreateShortcut(sLinkFile)
-oLink.TargetPath = "e:\học tiếng anh\IELTS_Vocab_Master.exe"
-oLink.WorkingDirectory = "e:\học tiếng anh"
-oLink.IconLocation = "e:\học tiếng anh\ielts_vocab_app\app_icon.ico,0"
-oLink.Description = "IELTS Vocab Master - Luyen Tu Vung IELTS Chuyen Sau"
-oLink.Save
+ps_command = r'''
+$WshShell = New-Object -ComObject WScript.Shell
+$Shortcut = $WshShell.CreateShortcut("C:\Users\ADMIN\Desktop\IELTS Vocab Master.lnk")
+$Shortcut.TargetPath = "E:\HCTING~1\IELTS_Vocab_Master.exe"
+$Shortcut.WorkingDirectory = "E:\HCTING~1"
+$Shortcut.IconLocation = "E:\HCTING~1\ielts_vocab_app\app_icon.ico,0"
+$Shortcut.Description = "IELTS Vocab Master - Luyen Tu Vung IELTS Chuyen Sau"
+$Shortcut.Save()
+Write-Output "SHORTCUT_SAVED_SUCCESS"
 '''
 
-vbs_path = os.path.join(os.environ.get('TEMP', '.'), 'create_shortcut.vbs')
-with open(vbs_path, 'w', encoding='utf-16') as f:
-    f.write(vbs_content)
-
-os.system(f'cscript //nologo "{vbs_path}"')
-target_exists = os.path.exists(r"C:\Users\ADMIN\Desktop\IELTS Vocab Master.lnk")
-print(f"Shortcut created successfully: {target_exists}")
+proc = subprocess.run(["powershell", "-NoProfile", "-Command", ps_command], capture_output=True, text=True)
+print(proc.stdout)
