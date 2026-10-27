@@ -1,9 +1,10 @@
 // IELTS Vocab Master - Network-First Service Worker (Auto-Update)
-const CACHE_NAME = 'ielts-vocab-v8-rating';
+const CACHE_NAME = 'ielts-vocab-v9-local';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './css/styles.css',
+  './js/tailwind.js',
   './js/app.js?v=20260918a',
   './js/speech.js?v=20260918a',
   './js/srs.js?v=20260918a',
