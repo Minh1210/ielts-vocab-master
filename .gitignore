@@ -5,3 +5,7 @@ __pycache__/
 .vscode/
 .idea/
 *.log
+build/
+dist/
+*.spec
+*.exe

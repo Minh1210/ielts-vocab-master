@@ -62,6 +62,15 @@ class IELTSApp {
   }
 
   bindModals() {
+    // Mobile App Guide Modal
+    const btnOpenMobileAppModal = document.getElementById('btnOpenMobileAppModal');
+    const modalMobileApp = document.getElementById('modalMobileApp');
+    if (btnOpenMobileAppModal && modalMobileApp) {
+      btnOpenMobileAppModal.addEventListener('click', () => {
+        modalMobileApp.classList.remove('hidden');
+      });
+    }
+
     // Add Word Modal
     const btnOpenAddWord = document.getElementById('btnOpenAddWord');
     const modalAddWord = document.getElementById('modalAddWord');
